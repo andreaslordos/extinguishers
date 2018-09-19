@@ -1,5 +1,14 @@
 from datetime import datetime
 import googlemaps
+import os
+
+os.chdir("..")
+config_file=open("config.txt","r")
+contents=config_file.read()
+lines=contents.split("\n")
+api_key=lines[0].split("=")[-1]
+config_file.close()
+os.chdir("code")
 
 
 def getDistanceGMAPS(source,destination):
@@ -10,7 +19,6 @@ def getDurationGMAPS(source,destination):
 
 
 def call_api(source,destination,api_type):
-    api_key="AIzaSyAZdfgkmRFRdS4AYanI1j0fiJDrq8C1FYk"
     gmaps=googlemaps.Client(key=api_key)
     now=datetime.now()
     directions_result=gmaps.directions(source,destination,mode="driving",departure_time=now)
