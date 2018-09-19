@@ -2,11 +2,11 @@ import os, sys, json
 from pathlib import Path
 
 FILENAME="saved.html"
-PATH_TO_CODE=os.path.dirname(os.path.abspath(__file__))
-PATH_TO_UTIL=(Path(PATH_TO_CODE)).__str__()+"\\util"
-PATH_TO_NODES=(Path(PATH_TO_CODE)).__str__()+"\\nodes"
-PATH_TO_SAVE=(Path(PATH_TO_CODE).parent).__str__()+"\\saves"
-PATH_TO_DATA=(Path(PATH_TO_CODE).parent).__str__()+"\\data"
+PATH_TO_SRC=os.path.dirname(os.path.abspath(__file__))
+PATH_TO_UTIL=(Path(PATH_TO_SRC)).__str__()+"\\util"
+PATH_TO_NODES=(Path(PATH_TO_SRC)).__str__()+"\\nodes"
+PATH_TO_SAVE=(Path(PATH_TO_SRC).parent).__str__()+"\\saves"
+PATH_TO_DATA=(Path(PATH_TO_SRC).parent).__str__()+"\\data"
 PATH_TO_SHP=Path(PATH_TO_DATA).__str__()+"\\shapefiles"
 PATH_TO_ARCHIVES=Path(PATH_TO_DATA).__str__()+"\\archives"
 
@@ -78,7 +78,7 @@ MAX_POP_DENSITY=0
 archiveName="archive.json"
 archive_dict = loadEvents(PATH_TO_ARCHIVES,archiveName)
 
-os.chdir(PATH_TO_CODE)
+os.chdir(PATH_TO_SRC)
 
 incidentList=[]
 incident_nodes=[]
