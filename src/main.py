@@ -8,7 +8,7 @@ PATH_TO_NODES=(Path(PATH_TO_SRC)).__str__()+"\\nodes"
 PATH_TO_SAVE=(Path(PATH_TO_SRC).parent).__str__()+"\\saves"
 PATH_TO_DATA=(Path(PATH_TO_SRC).parent).__str__()+"\\data\\"+COUNTRY
 PATH_TO_SHP=Path(PATH_TO_DATA).__str__()+"\\shapefiles"
-PATH_TO_ARCHIVES=Path(PATH_TO_DATA).__str__()+"\\archives"
+PATH_TO_ARCHIVES=Path(PATH_TO_DATA).__str__()+"\\emergencies"
 PATH_TO_HUBS=Path(PATH_TO_DATA).__str__()+"\\hubs"
 
 sys.path.insert(0, PATH_TO_NODES)
@@ -17,7 +17,7 @@ sys.path.insert(0, PATH_TO_UTIL)
 from gmplot import gmplot
 from nodes.FireNode import FireNode
 from util.cluster import Cluster
-from utils import removeDuplicates
+from util.utils import removeDuplicates
 from nodes.Node import Node
 from util.algorithms import calculate_score
 from util.algorithms import place_random_hubs
@@ -43,7 +43,14 @@ def plotAndSave(incidents,hubs,c1,c2,gmap,filename="saved.html",sizes=[400]):
     gmap.draw(PATH_TO_SAVE+"\\"+filename)
 
 
-def loadHubs(data):
+def loadHubs(path):
+    f=open(path+"\\hubs.txt","r")
+    content=f.read().split("\n")
+    data=[]
+    for x in range(len(content)):
+        temp_list=content[x].split(", ")
+        if len(temp_list[0])>2:
+            data.append((float(temp_list[0]),float(temp_list[1])))
     hubs=[]
     hubs_coords=[]
     for hub in data:
@@ -52,22 +59,9 @@ def loadHubs(data):
     return hubs, hubs_coords
 
 
-locations = [(34.8302, 33.3933),
-            (35.1283, 33.3145),
-            (34.6815, 33.0281),
-            (34.6903, 33.0692),
-            (34.6684, 32.9928),
-            (34.9207, 33.6163),
-            (34.9608, 33.6574),
-            (34.8739, 33.6177),
-            (34.7694, 32.4355),
-            (35.0297, 32.4306),
-            (34.7152, 32.4782),
-            (35.0575, 33.9704),
-            (35.1728, 33.3573),
-            (35.1883, 33.394)]
 
-hubs,hubs_coords=loadHubs(locations)
+
+hubs,hubs_coords=loadHubs(PATH_TO_HUBS)
 hub_nodes=hubs[:]
 #print(hubs)
 
@@ -76,7 +70,7 @@ hub_nodes=hubs[:]
 MAX_FRP=160.8
 MAX_SEV=62
 MAX_POP_DENSITY=0
-archiveName="archive.json"
+archiveName="emergencies.json"
 archive_dict = loadEvents(PATH_TO_ARCHIVES,archiveName)
 
 os.chdir(PATH_TO_SRC)
