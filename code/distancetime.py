@@ -17,7 +17,6 @@ def getDistanceGMAPS(source,destination):
 def getDurationGMAPS(source,destination):
     return call_api(source,destination,"duration")
 
-
 def call_api(source,destination,api_type):
     gmaps=googlemaps.Client(key=api_key)
     now=datetime.now()

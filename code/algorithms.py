@@ -1,6 +1,7 @@
 from distancetime import getDurationGMAPS
 from random import randint
 from Node import Node
+
 def calculate_score(nodes,hubs):
     '''
     The lower the distance from hub to event and the higher the weight of the event,
