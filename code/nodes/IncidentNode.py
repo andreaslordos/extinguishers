@@ -1,4 +1,4 @@
-from Node import Node
+from nodes.Node import Node
 
 class IncidentNode(Node):
     def __init__(self,lat,long,type,popDist):

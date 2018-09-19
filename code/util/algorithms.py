@@ -1,6 +1,6 @@
-from distancetime import getDurationGMAPS
+from util.distancetime import getDurationGMAPS
 from random import randint
-from Node import Node
+from nodes.Node import Node
 
 def calculate_score(nodes,hubs):
     '''

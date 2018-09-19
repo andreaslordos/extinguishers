@@ -1,13 +1,25 @@
-import os
-import json
-from gmplot import gmplot
+import os, sys, json
 from pathlib import Path
-from FireNode import FireNode
-from cluster import Cluster
+
+FILENAME="saved.html"
+PATH_TO_CODE=os.path.dirname(os.path.abspath(__file__))
+PATH_TO_UTIL=(Path(PATH_TO_CODE)).__str__()+"\\util"
+PATH_TO_NODES=(Path(PATH_TO_CODE)).__str__()+"\\nodes"
+PATH_TO_SAVE=(Path(PATH_TO_CODE).parent).__str__()+"\\saves"
+PATH_TO_DATA=(Path(PATH_TO_CODE).parent).__str__()+"\\data"
+PATH_TO_SHP=Path(PATH_TO_DATA).__str__()+"\\shapefiles"
+PATH_TO_ARCHIVES=Path(PATH_TO_DATA).__str__()+"\\archives"
+
+sys.path.insert(0, PATH_TO_NODES)
+sys.path.insert(0, PATH_TO_UTIL)
+
+from gmplot import gmplot
+from nodes.FireNode import FireNode
+from util.cluster import Cluster
 from utils import removeDuplicates
-from Node import Node
-from algorithms import calculate_score
-from algorithms import place_random_hubs
+from nodes.Node import Node
+from util.algorithms import calculate_score
+from util.algorithms import place_random_hubs
 
 def loadEvents(PATH_TO_DATA,archiveName):
     os.chdir(PATH_TO_DATA)
@@ -57,15 +69,14 @@ locations = [(34.8302, 33.3933),
 hubs,hubs_coords=loadHubs(locations)
 hub_nodes=hubs[:]
 #print(hubs)
-FILENAME="saved.html"
-PATH_TO_CODE=os.path.dirname(os.path.abspath(__file__))
-PATH_TO_SAVE=(Path(PATH_TO_CODE).parent).__str__()+"\\saves"
-PATH_TO_DATA=(Path(PATH_TO_CODE).parent).__str__()+"\\data"
+
+
+
 MAX_FRP=160.8
 MAX_SEV=62
 MAX_POP_DENSITY=0
 archiveName="archive.json"
-archive_dict = loadEvents(PATH_TO_DATA,archiveName)
+archive_dict = loadEvents(PATH_TO_ARCHIVES,archiveName)
 
 os.chdir(PATH_TO_CODE)
 

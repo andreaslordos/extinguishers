@@ -1,4 +1,4 @@
-from Node import Node
+from nodes.Node import Node
 #from utils import calculate_pop_density
 class FireNode(Node):
     def __init__(self,lat,long,type,pop,acq_date,confidence,frp):
