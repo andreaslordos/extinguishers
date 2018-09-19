@@ -1,14 +1,15 @@
 import os, sys, json
 from pathlib import Path
-
+COUNTRY="cyprus"
 FILENAME="saved.html"
 PATH_TO_SRC=os.path.dirname(os.path.abspath(__file__))
 PATH_TO_UTIL=(Path(PATH_TO_SRC)).__str__()+"\\util"
 PATH_TO_NODES=(Path(PATH_TO_SRC)).__str__()+"\\nodes"
 PATH_TO_SAVE=(Path(PATH_TO_SRC).parent).__str__()+"\\saves"
-PATH_TO_DATA=(Path(PATH_TO_SRC).parent).__str__()+"\\data"
+PATH_TO_DATA=(Path(PATH_TO_SRC).parent).__str__()+"\\data\\"+COUNTRY
 PATH_TO_SHP=Path(PATH_TO_DATA).__str__()+"\\shapefiles"
 PATH_TO_ARCHIVES=Path(PATH_TO_DATA).__str__()+"\\archives"
+PATH_TO_HUBS=Path(PATH_TO_DATA).__str__()+"\\hubs"
 
 sys.path.insert(0, PATH_TO_NODES)
 sys.path.insert(0, PATH_TO_UTIL)

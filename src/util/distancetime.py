@@ -8,7 +8,7 @@ contents=config_file.read()
 lines=contents.split("\n")
 api_key=lines[0].split("=")[-1]
 config_file.close()
-os.chdir("code")
+os.chdir("src")
 
 
 def getDistanceGMAPS(source,destination):
