@@ -116,7 +116,7 @@ gmap3 = gmplot.GoogleMapPlotter(incidentList[0][0],incidentList[0][1], 9) #map f
 #print(incidentList)
 incident_lats, incident_lons=zip(*incidentList) #events
 
-best_hub=place_random_hubs(32946749,34688796,32287786,34059345,10,mean_nodes,hub_nodes)
+best_hub=place_random_hubs(32946749,34688796,32287786,34059345,5,mean_nodes,hub_nodes)
 new_coords=[((best_hub).lat,(best_hub).long)]
 new_lats,new_lons=zip(*new_coords)
 new=(new_lats,new_lons)
