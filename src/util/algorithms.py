@@ -1,5 +1,5 @@
 from util.distancetime import getDurationGMAPS
-from random import randint
+from random import uniform
 from nodes.Node import Node
 
 def calculate_score(nodes,hubs):
@@ -25,16 +25,14 @@ def calculate_score(nodes,hubs):
                 hub_score[node.nearest_hub]+=(node.weight/((getDurationGMAPS(source,destination))**2))
             except Exception as e:
                 print("Warning")
-                hub_score[node.nearest_hub]+=(node.weight/((node.nearest_hub).getDistance(node))**2)
+                #shouldn't be included in the score if you can't drive to it!
     return hub_score
 
 def place_random_hubs(minlat,maxlat,minlon,maxlon,number_to_try,existing_nodes,existing_hubs):
 
     def genNewNode():
-        minlat,maxlat=347,351
-        minlon,maxlon=323,340
-        lat=randint(minlat,maxlat)/10 #determine new lat
-        long=randint(minlon,maxlon)/10 #determine new long
+        lat=uniform(minlat,maxlat) #determine new lat
+        long=uniform(minlon,maxlon) #determine new long
         print(lat,long)
         new_hub=Node(lat,long,"hub",0)
         return new_hub

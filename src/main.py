@@ -10,6 +10,7 @@ PATH_TO_DATA=(Path(PATH_TO_SRC).parent).__str__()+"\\data\\"+COUNTRY
 PATH_TO_SHP=Path(PATH_TO_DATA).__str__()+"\\shapefiles"
 PATH_TO_ARCHIVES=Path(PATH_TO_DATA).__str__()+"\\emergencies"
 PATH_TO_HUBS=Path(PATH_TO_DATA).__str__()+"\\hubs"
+TRIALS=30
 
 sys.path.insert(0, PATH_TO_NODES)
 sys.path.insert(0, PATH_TO_UTIL)
@@ -122,14 +123,17 @@ gmap3 = gmplot.GoogleMapPlotter(incidentList[0][0],incidentList[0][1], 9) #map f
 #print(incidentList)
 incident_lats, incident_lons=zip(*incidentList) #events
 
-best_hub=place_random_hubs(32946749,34688796,32287786,34059345,5,mean_nodes,hub_nodes)
+
+rect_file=open(PATH_TO_SHP+"\\rectangle.txt","r")
+contents=(rect_file.read().split("\n")[0]).split(",")
+min_lat,max_lat,min_lon,max_lon=float(contents[0]),float(contents[1]),float(contents[2]),float(contents[3])
+best_hub=place_random_hubs(min_lat,max_lat,min_lon,max_lon,TRIALS,mean_nodes,hub_nodes)
 new_coords=[((best_hub).lat,(best_hub).long)]
 new_lats,new_lons=zip(*new_coords)
 new=(new_lats,new_lons)
 hubs_lats, hubs_lons=zip(*hubs_coords) #hubs currently active
 incidents=(incident_lats,incident_lons)
 hubs=(hubs_lats,hubs_lons)
-#print(these_nodes)
-plotAndSave(these_nodes,new+hubs,"#FF0000","#0000FF",gmap3,filename="new_hub.html",sizes=[600])
+plotAndSave(these_nodes,new,"#000000","#0000FF",gmap3,filename="new_hub.html",sizes=[600])
 plotAndSave(incidents,hubs,"#FF0000","#0000FF",gmap,filename="fires_and_stations.html")
 plotAndSave(these_nodes,hubs,"#000000","#0000FF",gmap2,filename="cluster_means_stations.html",sizes=sizes)
