@@ -2,7 +2,7 @@ from util.distancetime import getDurationGMAPS
 from random import uniform
 from nodes.Node import Node
 
-def calculate_score(nodes,hubs):
+def calculate_score(nodes,hubs,api_key):
     '''
     The lower the distance from hub to event and the higher the weight of the event,
     the higher the score of the hub!
@@ -22,13 +22,13 @@ def calculate_score(nodes,hubs):
             print("Destination:",destination)
             print("Nearest hub:",node.nearest_hub)
             try:
-                hub_score[node.nearest_hub]+=(node.weight/((getDurationGMAPS(source,destination))**2))
+                hub_score[node.nearest_hub]+=(node.weight/((getDurationGMAPS(source,destination,api_key))**2))
             except Exception as e:
                 print("Warning")
                 #shouldn't be included in the score if you can't drive to it!
     return hub_score
 
-def place_random_hubs(minlat,maxlat,minlon,maxlon,number_to_try,existing_nodes,existing_hubs):
+def place_random_hubs(minlat,maxlat,minlon,maxlon,number_to_try,existing_nodes,existing_hubs,api_key):
 
     def genNewNode():
         lat=uniform(minlat,maxlat) #determine new lat
@@ -48,7 +48,7 @@ def place_random_hubs(minlat,maxlat,minlon,maxlon,number_to_try,existing_nodes,e
             total_hubs=[new_hub]+existing_hubs
             for node in existing_nodes:
                 node.determineNearestHub(total_hubs)
-            new_score=calculate_score(existing_nodes,[new_hub])
+            new_score=calculate_score(existing_nodes,[new_hub],api_key)
         if new_score[new_hub]>highscore:
             best_hub=new_hub
             highscore=new_score[new_hub]

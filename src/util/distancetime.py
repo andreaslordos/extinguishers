@@ -2,22 +2,14 @@ from datetime import datetime
 import googlemaps
 import os
 
-os.chdir("..")
-config_file=open("config.txt","r")
-contents=config_file.read()
-lines=contents.split("\n")
-api_key=lines[0].split("=")[-1]
-config_file.close()
-os.chdir("src")
 
+def getDistanceGMAPS(source,destination,api_key):
+    return call_api(source,destination,"distance",api_key)
 
-def getDistanceGMAPS(source,destination):
-    return call_api(source,destination,"distance")
+def getDurationGMAPS(source,destination,api_key):
+    return call_api(source,destination,"duration",api_key)
 
-def getDurationGMAPS(source,destination):
-    return call_api(source,destination,"duration")
-
-def call_api(source,destination,api_type):
+def call_api(source,destination,api_type,api_key):
     gmaps=googlemaps.Client(key=api_key)
     now=datetime.now()
     directions_result=gmaps.directions(source,destination,mode="driving",departure_time=now)
