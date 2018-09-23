@@ -1,6 +1,7 @@
 import math
 
 class Node:
+    #Abstract class for all nodes
     def __init__(self,lat,long,type,popDens):
         types=("event","hub")
         if type not in types:
@@ -20,6 +21,10 @@ class Node:
         return self.long
 
     def getDistance(self,target_node):
+        '''
+        Input: target_node, Node, node to calculate distance to
+        Output: d, float, distance to node in meters
+        '''
         lat1, lon1 = self.getLat(),self.getLong()
         lat2, lon2 = target_node.lat,target_node.long
         radius = 6371 # km radius of earth
@@ -37,7 +42,10 @@ class Node:
 
     def getNearestX(self,x,listOfNodes):
         '''
-        Returns the nearest x nodes in a list of nodes
+        Input: x, Integer, number of nearest nodes to retrieve
+               listOfNodes, List, list of nodes on the map
+        Output: nearest, List, list of nearest X nodes
+                copyList, List, list of all nodes - nearest
         '''
         distances=[]
         distances_to_nodes={}
@@ -62,6 +70,11 @@ class Node:
         return nearest,copyOfList
 
     def determineNearestHub(self,listOfNodes):
+        '''
+        Input: listOfNodes, List, list of all nodes in hub
+        Output: None
+        Sets self.nearest_hub to the nearest hub of this node.
+        '''
         lowest=9999999999999999
         nearest=None
         for node in listOfNodes:

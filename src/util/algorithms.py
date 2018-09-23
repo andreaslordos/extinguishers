@@ -4,6 +4,10 @@ from nodes.Node import Node
 
 def calculate_score(nodes,hubs,api_key):
     '''
+    Input: nodes, List, contains event nodes such as fire/crime events
+           hubs, List, contains hubs such as fire stations/police stations
+    Output: hub_score, Dictionary, a list of all hubs and their equivalent scores
+
     The lower the distance from hub to event and the higher the weight of the event,
     the higher the score of the hub!
 
@@ -29,7 +33,19 @@ def calculate_score(nodes,hubs,api_key):
     return hub_score
 
 def place_random_hubs(minlat,maxlat,minlon,maxlon,number_to_try,existing_nodes,existing_hubs,api_key):
-
+    '''
+    Input: minlat, float, minimum latitude possible for randomly generated node
+           maxlat, float, maximum latitude possible for randomly generated node
+           minlon, float, minimum longitude possible for randomly generated node
+           maxlon, float, maximum longitude possible for randomly generated node
+           number_to_try, number of nodes to try a random walk on
+           existing_nodes, Node, event nodes (e.g. fires) that already exist
+           existing_hubs, Node, hub nodes (e.g. fire stations) that already exists
+           api_key, String, api key for Google Maps API
+    Output: best_hub, Node, a new hub node (generated from genNewNode()) that has
+                            the highest score (generated from calculate_score())
+                            out of number_to_try nodes that were generated
+    '''
     def genNewNode():
         lat=uniform(minlat,maxlat) #determine new lat
         long=uniform(minlon,maxlon) #determine new long

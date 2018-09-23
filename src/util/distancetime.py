@@ -4,9 +4,23 @@ import os
 
 
 def getDistanceGMAPS(source,destination,api_key):
+    '''
+    Input: source, String, comma-separated lat/long values of source node
+           destination, String, comma-separated lat/long values of destination node
+           api_key, String, API key for Google Maps Directions API
+    Output: distanceOrTime['value'], Integer, driving time in seconds from source
+            to destination
+    '''
     return call_api(source,destination,"distance",api_key)
 
 def getDurationGMAPS(source,destination,api_key):
+    '''
+    Input: source, String, comma-separated lat/long values of source node
+           destination, String, comma-separated lat/long values of destination node
+           api_key, String, API key for Google Maps Directions API
+    Output: distanceOrTime['value'], Integer, driving distance in meters from
+            source to destination
+    '''
     return call_api(source,destination,"duration",api_key)
 
 def call_api(source,destination,api_type,api_key):
