@@ -1,6 +1,7 @@
 from datetime import datetime
 
 def removeDuplicates(nodes):
+    MIN_DISTANCE=3
     '''
     Input: nodes of events with lat and long as well as dates. If date, lat and long
     are all similar, then this is a duplicate event
@@ -9,50 +10,51 @@ def removeDuplicates(nodes):
         list_date=date_str.split("-")
         return datetime(int(str(list_date[0])),int(str(list_date[1])),int(list_date[2]))
         #The above is a hack to account for leading zeros (e.g. 2014-04-03)
+        #Year, month, day
 
-    #Step 1 - create a dictionary of all dates, with a corresponding list of fires that
-    #occured that day!
     list_of_dates=[]
     dates_to_nodes={}
     for node in nodes:
         date=parseDate(node.acq_date)
-
         try:
             dates_to_nodes[date].append(node)
         except:
             dates_to_nodes[date]=[node]
 
         if date not in list_of_dates:
-            list_of_dates.append(date)
+            list_of_dates.append(date) #Maybe it's not wise to include
+                                        #just the date of fires!
 
-    ongoingEvents=[]
-    deadEvents=[]
-    list_of_dates.sort()
+    current_events={} #current_fires={(lat,long)=(node,updated)}
+    dead_events=[]
     for date in list_of_dates:
-        stillAlive=[]
         for event in dates_to_nodes[date]:
-            if ongoingEvents==[] and deadEvents==[]: #edge case
-                ongoingEvents.append(event)
-            else:
-                flag=False
-                for ongoingEvent in ongoingEvents:
-                    distance=(ongoingEvent.getDistance(event))
-                    if distance<5:
-                        if ongoingEvent not in stillAlive:
-                            stillAlive.append(ongoingEvent)
-                        ongoingEvent.severity+=1
-                        flag=True #Increased severity, so don't add this as a separate event
-                        break
-                if flag==False:
-                    ongoingEvents.append(event) #New event added
-                for thing in ongoingEvents:
-                    if thing not in stillAlive:
-                        ongoingEvents.remove(thing)
-                        deadEvents.append(thing)
-    for thing in ongoingEvents:
-        deadEvents.append(thing)
+            updatedThisEvent=False
+            for key in current_events:
+                distance=current_events[key][0].getDistance(event)
+                if distance<MIN_DISTANCE:
+                    current_events[key][-1]=True
+                    current_events[key][0].severity+=1
+                    updatedThisEvent=True
+            if updatedThisEvent==False:
+                current_events[(event.lat,event.long)]=[event,True]
 
-    return deadEvents
+            x=0
+            keys=[]
+            for key in current_events:
+                keys.append(key)
+            while x<len(current_events):
+                if current_events[keys[x]][-1]==False:
+                    dead_events.append(current_events[keys[x]][0])
+                    del current_events[keys[x]]
+                    keys.pop(x)
+                    x-=1
+                x+=1
+
+
+            for thing in current_events:
+                current_events[thing][-1]=False
+    return dead_events
 
 def calculate_pop_density(lat,long,pop):
     '''

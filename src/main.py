@@ -1,8 +1,10 @@
 import os, sys, json
 from pathlib import Path
 
+#To do: break it up into communities, find optimal fire station for each
+#community
 COUNTRY="cyprus"
-
+NUMBER_OF_NEW=2 #Number of hubs to place
 #Add paths to everything important for future reference
 PATH_TO_SRC=os.path.dirname(os.path.abspath(__file__))
 PATH_TO_UTIL=(Path(PATH_TO_SRC)).__str__()+"\\util"
@@ -13,7 +15,7 @@ PATH_TO_SHP=Path(PATH_TO_DATA).__str__()+"\\shapefiles"
 PATH_TO_ARCHIVES=Path(PATH_TO_DATA).__str__()+"\\emergencies"
 PATH_TO_HUBS=Path(PATH_TO_DATA).__str__()+"\\hubs"
 
-TRIALS=50 #number of trials to run (e.g., how many potential hub locations to try?)
+TRIALS=1000 #number of trials to run (e.g., how many potential hub locations to try?)
 
 sys.path.insert(0, PATH_TO_NODES) #add nodes folder to path to be able to import
 sys.path.insert(0, PATH_TO_UTIL) #add util folder to path to be able to import
@@ -97,7 +99,6 @@ def loadHubs(path):
 
 hubs,hubs_coords=loadHubs(PATH_TO_HUBS)
 hub_nodes=hubs[:]
-#print(hubs)
 
 api_key=getApiKey(PATH_TO_SRC)
 
@@ -155,7 +156,6 @@ gmap2 = gmplot.GoogleMapPlotter(incidentList[0][0],incidentList[0][1], 9, apikey
 gmap3 = gmplot.GoogleMapPlotter(incidentList[0][0],incidentList[0][1], 9, apikey=api_key) #map for new hub
 gmap4 = gmplot.GoogleMapPlotter(incidentList[0][0],incidentList[0][1], 9, apikey=api_key)
 
-#print(incidentList)
 incident_lats, incident_lons=zip(*incidentList) #events
 
 
@@ -163,8 +163,10 @@ rect_file=open(PATH_TO_SHP+"\\rectangle.txt","r")
 contents=(rect_file.read().split("\n")[0]).split(",")
 min_lat,max_lat,min_lon,max_lon=float(contents[0]),float(contents[1]),float(contents[2]),float(contents[3])
 
-best_hub=place_random_hubs(min_lat,max_lat,min_lon,max_lon,TRIALS,mean_nodes,hub_nodes,api_key)
-new_coords=[((best_hub).lat,(best_hub).long)]
+best_hubs=place_random_hubs(NUMBER_OF_NEW,min_lat,max_lat,min_lon,max_lon,TRIALS,mean_nodes,hub_nodes,api_key)
+new_coords=[]
+for hub in best_hubs:
+    new_coords.append(((hub).lat,(hub).long))
 new_lats,new_lons=zip(*new_coords) #new hub to be made
 new=(new_lats,new_lons)
 
@@ -175,4 +177,4 @@ hubs=(hubs_lats,hubs_lons)
 plotAndSave([incidents,hubs],["#FF0000","#0000FF"],gmap,filename="fires_and_stations.html")
 plotAndSave([these_nodes,hubs],["#000000","#0000FF"],gmap2,filename="cluster_means_stations.html")
 plotAndSave([these_nodes,new],["#000000","#0000FF"],gmap3,filename="new_hub.html")
-plotAndSave([these_nodes,hubs,new],["#000000","#0000FF","#551A8B"],gmap4,filename="final.html",sizes=[600,1800,1800])
+plotAndSave([these_nodes,hubs,new],["#000000","#0000FF","#228B22"],gmap4,filename="final.html",sizes=[600,1800,1800])

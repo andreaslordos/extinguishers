@@ -12,27 +12,26 @@ def calculate_score(nodes,hubs,api_key):
     the higher the score of the hub!
 
     Score of hub = sum(weight_of_surrounding_events/((distance_to_event)^2))
+    Objective needs to be to maximize hub score
     '''
     hub_score={}
     for hub in hubs:
         hub_score[hub]=0
-    print(hub_score)
     for node in nodes:
         if node.nearest_hub in hubs:
             source=str((node.nearest_hub).lat)+", "+str((node.nearest_hub).long)
             destination=str(node.lat)+", "+str(node.long)
-            print("Node weight:",node.weight)
-            print("Source:",source)
-            print("Destination:",destination)
-            print("Nearest hub:",node.nearest_hub)
             try:
-                hub_score[node.nearest_hub]+=(node.weight/((getDurationGMAPS(source,destination,api_key))**2))
+                hub_score[node.nearest_hub]+=(node.weight/((node.getDistance(node.nearest_hub))**2))
             except Exception as e:
-                print("Warning")
                 #shouldn't be included in the score if you can't drive to it!
-    return hub_score
+                pass
+    total=0
+    for hub in hub_score:
+         total+=hub_score[hub]
+    return total
 
-def place_random_hubs(minlat,maxlat,minlon,maxlon,number_to_try,existing_nodes,existing_hubs,api_key):
+def place_random_hubs(howManyHubs,minlat,maxlat,minlon,maxlon,number_to_try,existing_nodes,existing_hubs,api_key):
     '''
     Input: minlat, float, minimum latitude possible for randomly generated node
            maxlat, float, maximum latitude possible for randomly generated node
@@ -49,7 +48,7 @@ def place_random_hubs(minlat,maxlat,minlon,maxlon,number_to_try,existing_nodes,e
     def genNewNode():
         lat=uniform(minlat,maxlat) #determine new lat
         long=uniform(minlon,maxlon) #determine new long
-        print(lat,long)
+        #print(lat,long)
         new_hub=Node(lat,long,"hub",0)
         return new_hub
 
@@ -58,14 +57,16 @@ def place_random_hubs(minlat,maxlat,minlon,maxlon,number_to_try,existing_nodes,e
     new_score={}
     for x in range(number_to_try):
         new_hub=1
-        new_score[new_hub]=0
-        while new_score[new_hub]==0:
-            new_hub=genNewNode()
-            total_hubs=[new_hub]+existing_hubs
+        new_score=0
+        while new_score==0:
+            new_hubs=[]
+            for number_of_hubs in range(howManyHubs):
+                new_hubs.append(genNewNode())
+            total_hubs=new_hubs+existing_hubs
             for node in existing_nodes:
                 node.determineNearestHub(total_hubs)
-            new_score=calculate_score(existing_nodes,[new_hub],api_key)
-        if new_score[new_hub]>highscore:
-            best_hub=new_hub
-            highscore=new_score[new_hub]
-    return best_hub
+            new_score=calculate_score(existing_nodes,total_hubs,api_key)
+        if new_score>highscore:
+            best_hubs=new_hubs
+            highscore=new_score
+    return best_hubs
