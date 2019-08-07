@@ -1,12 +1,21 @@
-# extinguisher
+# The Extinguisher Project
 
-Visualization software to analyze current emergency-response hubs (e.g. fire stations, police stations, hospitals) and events related to the hubs (e.g. for fire stations that would be fires; for police stations, that would be car accidents and crime). This repository empowers both national and local governments to determine the weak spots in any emergency response system based on historical data and graph theory.
+Empower governments to determine weaknesses in emergency response systems using historical data and Machine Learning.
 
-Step 1: Extinguisher plots historical data on an interactive map of the country using lat/long coordinates. Red dots are fires that occured in the past 3 years, blue dots are fire stations.
+### What
+
+Visualization software to analyze current emergency-response hubs (e.g. fire stations, police stations, hospitals) and events related to the hubs (e.g. for fire stations that would be fires; for police stations, that would be car accidents and crime). 
+
+Extinguisher then suggests locations for new emergency-response hubs so as to optimize the emergency response system.
+
+
+### How
+
+Step 1: Extinguisher plots historical data on an interactive map of the country using lat/long coordinates. Red dots are fires that occured in the past decade, while blue dots are fire stations. This data is collected via NASA's MODIS and VIIRS satellites.
 
 ![plots](https://i.imgur.com/XVVZ9og.png)
 
-Step 2: Then, Extinguisher uses a clustering algorithm we wrote that takes into account the weight of each fire, it's importance, severity, confidence etc. in order to determine the mean location of a cluster. Mean locations are seen as grey dots below.
+Step 2: Then, Extinguisher uses a clustering algorithm that takes into account the weight of each fire, it's importance, severity, confidence etc. in order to determine the mean location of a cluster. Mean locations are seen as grey dots below.
 
 ![clusters](https://i.imgur.com/Pc3qefy.png)
 
@@ -18,4 +27,4 @@ Essentially, when it's scoring a potential emergency response center location, t
 
 Extinguisher attempts to optimize the sum of scores of all emergency response centers using the above equation.
 
-Authors: Andreas Lordos, 18 (andreasglordos@gmail.com)
+Author: Andreas Lordos, 18 (andreasglordos@gmail.com)
