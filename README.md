@@ -18,4 +18,4 @@ Essentially, when it's scoring a potential emergency response center location, t
 
 Extinguisher attempts to optimize the sum of scores of all emergency response centers using the above equation.
 
-Authors: Andreas Lordos, 17 (andreasglordos@gmail.com)
+Authors: Andreas Lordos, 18 (andreasglordos@gmail.com)
