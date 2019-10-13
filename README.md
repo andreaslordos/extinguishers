@@ -1,6 +1,6 @@
-# The Extinguisher Project
+# Extinguisher
 
-Empower governments to determine weaknesses in emergency response systems using historical data and Machine Learning.
+Empower governments to determine weaknesses in emergency response systems using NASA datasets and Computer Science.
 
 ### What
 
@@ -28,3 +28,5 @@ Essentially, when it's scoring a potential emergency response center location, t
 Extinguisher attempts to optimize the sum of scores of all emergency response centers using the above equation.
 
 Author: Andreas Lordos, 18 (andreasglordos@gmail.com)
+
+Full paper to be released soon.
