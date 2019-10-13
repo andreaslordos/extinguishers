@@ -41,7 +41,6 @@ def loadEvents(PATH_TO_DATA,archiveName):
     return event_dict
 
 
-#([these_nodes,new,hubs],["#000000","#0000FF","#551A8B"],gmap4,filename="final.html",sizes=[600,1800,1800])
 def plotAndSave(nodes,colors,gmap,filename="saved.html",sizes=[400,1600]):
     '''
     Input: nodes, List, list contains zipped tuples of multiple nodes each
